@@ -1,25 +1,8 @@
 package com.pengrad.telegrambot.impl;
 
-import com.pengrad.telegrambot.model.InputFile;
-import com.pengrad.telegrambot.model.InputFileBytes;
-import com.pengrad.telegrambot.model.Keyboard;
-import com.pengrad.telegrambot.response.GetFileResponse;
-import com.pengrad.telegrambot.response.GetMeResponse;
-import com.pengrad.telegrambot.response.GetUpdatesResponse;
-import com.pengrad.telegrambot.response.GetUserProfilePhotos;
-import com.pengrad.telegrambot.response.SendChatActionResponse;
-import com.pengrad.telegrambot.response.SendResponse;
-import com.pengrad.telegrambot.response.SetWebhookResponse;
-
-import retrofit.Callback;
-import retrofit.http.Field;
-import retrofit.http.FormUrlEncoded;
-import retrofit.http.GET;
-import retrofit.http.Multipart;
-import retrofit.http.POST;
-import retrofit.http.Part;
-import retrofit.http.Query;
-import rx.Observable;
+import com.pengrad.telegrambot.model.request.*;
+import com.pengrad.telegrambot.response.*;
+import retrofit.http.*;
 
 
 /**
@@ -31,37 +14,13 @@ public interface BotApi {
     @GET("/getMe")
     GetMeResponse getMe();
 
-    @GET("/getMe")
-    void getMe(Callback<GetMeResponse> callback);
-
-    @GET("/getMe")
-    Observable<GetMeResponse> getMeRx();
-
 
     @POST("/sendMessage")
     @FormUrlEncoded
     SendResponse sendMessage(
             @Field("chat_id") Integer chatId,
             @Field("text") String text,
-            @Field("disable_web_page_preview") Boolean disableWebPagePreview,
-            @Field("reply_to_message_id") Integer replyToMessageId,
-            @Field("reply_markup") Keyboard replyMarkup);
-
-    @POST("/sendMessage")
-    @FormUrlEncoded
-    SendResponse sendMessage(
-            @Field("chat_id") Integer chatId,
-            @Field("text") String text,
-            @Field("disable_web_page_preview") Boolean disableWebPagePreview,
-            @Field("reply_to_message_id") Integer replyToMessageId,
-            @Field("reply_markup") Keyboard replyMarkup,
-            Callback<SendResponse> callback);
-
-    @POST("/sendMessage")
-    @FormUrlEncoded
-    Observable<SendResponse> sendMessageRx(
-            @Field("chat_id") Integer chatId,
-            @Field("text") String text,
+            @Field("parse_mode") ParseMode parse_mode,
             @Field("disable_web_page_preview") Boolean disableWebPagePreview,
             @Field("reply_to_message_id") Integer replyToMessageId,
             @Field("reply_markup") Keyboard replyMarkup);
@@ -109,6 +68,8 @@ public interface BotApi {
             @Part("chat_id") Integer chatId,
             @Part("audio") String audio,
             @Part("duration") Integer duration,
+            @Part("performer") String performer,
+            @Part("title") String title,
             @Part("reply_to_message_id") Integer replyToMessageId,
             @Part("reply_markup") Keyboard replyMarkup);
 
@@ -118,6 +79,8 @@ public interface BotApi {
             @Part("chat_id") Integer chatId,
             @Part("audio") InputFile audio,
             @Part("duration") Integer duration,
+            @Part("performer") String performer,
+            @Part("title") String title,
             @Part("reply_to_message_id") Integer replyToMessageId,
             @Part("reply_markup") Keyboard replyMarkup);
 
@@ -127,6 +90,8 @@ public interface BotApi {
             @Part("chat_id") Integer chatId,
             @Part("audio") InputFileBytes audio,
             @Part("duration") Integer duration,
+            @Part("performer") String performer,
+            @Part("title") String title,
             @Part("reply_to_message_id") Integer replyToMessageId,
             @Part("reply_markup") Keyboard replyMarkup);
 
@@ -211,8 +176,37 @@ public interface BotApi {
             @Part("reply_to_message_id") Integer replyToMessageId,
             @Part("reply_markup") Keyboard replyMarkup);
 
-    @POST("/sendLocation")
+
+    @Multipart
+    @POST("/sendVoice")
+    SendResponse sendVoice(
+            @Part("chat_id") Integer chatId,
+            @Part("voice") String voice,
+            @Part("duration") Integer duration,
+            @Part("reply_to_message_id") Integer replyToMessageId,
+            @Part("reply_markup") Keyboard replyMarkup);
+
+    @Multipart
+    @POST("/sendVoice")
+    SendResponse sendVoice(
+            @Part("chat_id") Integer chatId,
+            @Part("voice") InputFile voice,
+            @Part("duration") Integer duration,
+            @Part("reply_to_message_id") Integer replyToMessageId,
+            @Part("reply_markup") Keyboard replyMarkup);
+
+    @Multipart
+    @POST("/sendVoice")
+    SendResponse sendVoice(
+            @Part("chat_id") Integer chatId,
+            @Part("voice") InputFileBytes voice,
+            @Part("duration") Integer duration,
+            @Part("reply_to_message_id") Integer replyToMessageId,
+            @Part("reply_markup") Keyboard replyMarkup);
+
+
     @FormUrlEncoded
+    @POST("/sendLocation")
     SendResponse sendLocation(
             @Field("chat_id") Integer chatId,
             @Field("latitude") Float latitude,
@@ -221,15 +215,15 @@ public interface BotApi {
             @Field("reply_markup") Keyboard replyMarkup);
 
 
-    @POST("/sendChatAction")
     @FormUrlEncoded
+    @POST("/sendChatAction")
     SendChatActionResponse sendChatAction(
             @Field("chat_id") Integer chatId,
-            @Field("action") String action);
+            @Field("action") ChatAction action);
 
 
     @GET("/getUserProfilePhotos")
-    GetUserProfilePhotos getUserProfilePhotos(
+    GetUserProfilePhotosResponse getUserProfilePhotos(
             @Query("user_id") Integer userId,
             @Query("offset") Integer offset,
             @Query("limit") Integer limit);
@@ -242,9 +236,17 @@ public interface BotApi {
             @Query("timeout") Integer timeout);
 
 
-    @POST("/setWebhook")
     @FormUrlEncoded
+    @POST("/setWebhook")
     SetWebhookResponse setWebhook(@Field("url") String url);
+
+    @Multipart
+    @POST("/setWebhook")
+    SetWebhookResponse setWebhook(@Part("url") String url, @Part("certificate") InputFile certificate);
+
+    @Multipart
+    @POST("/setWebhook")
+    SetWebhookResponse setWebhook(@Part("url") String url, @Part("certificate") InputFileBytes certificate);
 
     @GET("/getFile")
     GetFileResponse getFile(@Query("file_id") String fileId);

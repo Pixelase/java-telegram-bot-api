@@ -1,4 +1,4 @@
-package com.pengrad.telegrambot.model;
+package com.pengrad.telegrambot.model.request;
 
 /**
  * stas
@@ -6,8 +6,8 @@ package com.pengrad.telegrambot.model;
  */
 public class ReplyKeyboardHide extends Keyboard {
 
-    public final boolean hide_keyboard = true;
-    public final boolean selective;
+    private final boolean hide_keyboard = true;
+    private final boolean selective;
 
     public ReplyKeyboardHide() {
         this(false);

@@ -1,4 +1,4 @@
-package com.pengrad.telegrambot.model;
+package com.pengrad.telegrambot.model.request;
 
 /**
  * stas
@@ -6,8 +6,8 @@ package com.pengrad.telegrambot.model;
  */
 public class ForceReply extends Keyboard {
 
-    public final boolean force_reply = true;
-    public final boolean selective;
+    private final boolean force_reply = true;
+    private final boolean selective;
 
     public ForceReply() {
         this(false);

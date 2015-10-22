@@ -7,14 +7,14 @@ Download
 -------
 Download the latest version via Gradle:
 ```groovy
-compile 'com.github.pengrad:java-telegram-bot-api:1.1.0'
+compile 'com.github.pengrad:java-telegram-bot-api:1.2.0'
 ```
 or Maven:
 ```xml
 <dependency>
   <groupId>com.github.pengrad</groupId>
   <artifactId>java-telegram-bot-api</artifactId>
-  <version>1.0.3</version>
+  <version>1.2.0</version>
 </dependency>
 ```
 
@@ -25,30 +25,13 @@ Usage
 TelegramBot bot = TelegramBotAdapter.build("BOT_TOKEN");
 
 bot.sendMessage(
-    123321,    // chat_id
-    "Hello!",  // text
-    false,     // disable_web_page_preview
-    null,      // reply_to_message_id
-    new ReplyKeyboardMarkup(new String[]{"BUTTON_OK", "BUTTON_CANCEL"}));  // keyboard
+    123321,                    // chat_id
+    "Hello _italic_ *bold*!",  // text
+    ParseMode.Markdown,        // Markdown text or null
+    false,                     // disable_web_page_preview
+    replyMessageId,            // reply_to_message_id
+    new ReplyKeyboardMarkup(new String[]{"ok", "test"}).oneTimeKeyboard(true));  // keyboard
 ````
-
-
-License
--------
-
-    Copyright 2015 Stas Parshin
-
-    Licensed under the Apache License, Version 2.0 (the "License");
-    you may not use this file except in compliance with the License.
-    You may obtain a copy of the License at
-
-       http://www.apache.org/licenses/LICENSE-2.0
-
-    Unless required by applicable law or agreed to in writing, software
-    distributed under the License is distributed on an "AS IS" BASIS,
-    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-    See the License for the specific language governing permissions and
-    limitations under the License.
 
 
 
